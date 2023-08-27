@@ -1,5 +1,3 @@
-
-
 public enum SerialConnectionError:Error {
     case couldNotOpenPort
     case notADeviceFilePath

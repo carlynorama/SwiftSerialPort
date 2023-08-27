@@ -1,5 +1,5 @@
 #include "port.h"
-#include <mach/arm/boolean.h>
+#include <mach/mach_types.h>
 #include <stdio.h>   /* Standard input/output definitions */
 #include <string.h>  /* String function definitions */
 #include <unistd.h>  /* UNIX standard function definitions */
@@ -38,23 +38,47 @@ int close_port(const int file_descriptor) {
   return close(file_descriptor);
 }
 
+//Example of how to update a termios setting. 
+//TODO: let user chose if immediate
+int update_baudrate(const int file_descriptor, const int new_rate, const int when) {
+  struct termios current_settings;
+  int r;
+
+  r = tcgetattr(file_descriptor, &current_settings);
+  if (r < 0) { return r; }
+
+  cfsetispeed(&current_settings, new_rate);
+  cfsetospeed(&current_settings, new_rate);
+
+  //TODO: needed? 
+      current_settings.c_cflag |= (CLOCAL | CREAD);
+
+    /*
+     * Set the new options for the port...
+     */
+
+  r = tcsetattr(file_descriptor, when, &current_settings);
+  return r;
+}
+
+
 
 /* Set the O_NONBLOCK flag of desc if value is nonzero,
    or clear the flag if value is 0.
    Return 0 on success, or -1 on error with errno set. */
 
-int
-set_flag (int file_descriptor, int flag, boolean_t on)
-{
-  int current_flags = fcntl (file_descriptor, F_GETFL, 0);
-  /* If reading the flags failed, return error indication now. */
-  if (current_flags == -1)
-    return -1;
-  /* Set just the flag we want to set. */
-  if (on)
-    current_flags |= flag;
-  else
-    current_flags &= ~flag;
-  /* Store modified flag word in the descriptor. */
-  return fcntl (file_descriptor, F_SETFL, current_flags);
-}
+// int
+// set_flag (int file_descriptor, int flag, boolean_t on)
+// {
+//   int current_flags = fcntl (file_descriptor, F_GETFL, 0);
+//   /* If reading the flags failed, return error indication now. */
+//   if (current_flags == -1)
+//     return -1;
+//   /* Set just the flag we want to set. */
+//   if (on)
+//     current_flags |= flag;
+//   else
+//     current_flags &= ~flag;
+//   /* Store modified flag word in the descriptor. */
+//   return fcntl (file_descriptor, F_SETFL, current_flags);
+// }
