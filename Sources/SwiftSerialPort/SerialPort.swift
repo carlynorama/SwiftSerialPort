@@ -167,10 +167,6 @@ extension SerialPort {
         return message
     }
     
-    public func setReadEscapes(wait vtime:UInt8, minNumberOfBytes vmin:UInt8) {
-        set_early_fail_behavior(fileDescriptor, vtime, vmin)
-    }
-
     //TODO: how to make cancellable? Rely on port settings?
     public func awaitData(count:Int) async -> Result<[UInt8], Error> {
         var dataBuffer = Array<UInt8>(repeating: 0, count: count)
