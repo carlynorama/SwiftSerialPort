@@ -66,8 +66,11 @@ extension SerialPort {
     //wait is in tenths of seconds
     //minNumberOfBytes should be lower than the bytes the read is requesting.
     //see http://unixwiz.net/techtips/termios-vmin-vtime.html
-    public func setReadEscapes(wait vtime:UInt8, minNumberOfBytes vmin:UInt8) {
-        set_early_fail_behavior(fileDescriptor, vtime, vmin)
+    public func setReadEscapes(wait vtime:UInt8, minNumberOfBytes vmin:UInt8) throws {
+        let errors = set_early_fail_behavior(fileDescriptor, vtime, vmin) 
+        if errors < 0 {
+            throw SerialSettingsError.settingNotUpdated
+        }
     }
 
 

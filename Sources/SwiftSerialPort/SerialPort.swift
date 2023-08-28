@@ -8,7 +8,7 @@ import SerialC
 
 public struct SerialPort {
     let fileDescriptor:Int32
-    let devicePath:String
+    public let devicePath:String
     
     var description:String {
         "fileDescriptor: \(fileDescriptor)"
