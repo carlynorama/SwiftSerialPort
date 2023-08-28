@@ -6,7 +6,7 @@
 
 import SerialC
 
-public struct SerialPort {
+public final class SerialPort {
     let fileDescriptor:Int32
     public let devicePath:String
     
@@ -47,8 +47,12 @@ public struct SerialPort {
             }
         }  
     }
+
+    deinit {
+        close()
+    }
     
-    public func close() {
+    func close() {
         let result = close_port(fileDescriptor)
         print("closing \(fileDescriptor): \(result)")
     }
