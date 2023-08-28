@@ -83,7 +83,7 @@ extension SerialPort {
     //     }
     // }
     
-    public func read(maxCount:Int) throws -> [UInt8] {
+    public func readIfAvailable(maxCount:Int) throws -> [UInt8] {
         var dataBuffer = Array<UInt8>(repeating: 0, count: maxCount)
         let bytesReceived = dataBuffer.withUnsafeMutableBufferPointer { bufferPointer in
             return noblock_read_from_port(fileDescriptor, bufferPointer.baseAddress, maxCount)
@@ -116,7 +116,7 @@ extension SerialPort {
         }
     }
     
-    public func readLines(maxLength:Int = 1024) throws -> (lines:[String], remainder:String) {
+    public func readAvailableLines(maxLength:Int = 1024) throws -> (lines:[String], remainder:String) {
         var buffer = try readAllAvailable()
         //TODO: other encodings aren't likely but aren't impossible. 
         buffer.append(0) //cString must be null terminated 
@@ -168,7 +168,7 @@ extension SerialPort {
     }
     
     //TODO: how to make cancellable? Rely on port settings?
-    public func awaitData(count:Int) async -> Result<[UInt8], Error> {
+    public func awaitBytes(count:Int) async -> Result<[UInt8], Error> {
         var dataBuffer = Array<UInt8>(repeating: 0, count: count)
         let bytesReceived = dataBuffer.withUnsafeMutableBufferPointer { bufferPointer in
             return default_read_from_port(fileDescriptor, bufferPointer.baseAddress, count)
