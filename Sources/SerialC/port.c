@@ -114,6 +114,8 @@ int validate_baudrate(const int rate_to_check, speed_t* rate_to_use) {
 
 }
 
+//MARK: Settings
+
 int update_baudrate(const int file_descriptor, const speed_t new_rate, const int when) {
   struct termios current_settings;
   int r;
@@ -145,7 +147,6 @@ int set_early_fail_behavior(const int file_descriptor, const cc_t new_vtime, con
 
     settings.c_cc[VTIME] = new_vtime;//10;
     settings.c_cc[VMIN]  = new_vmin; //0
-
 
     /* set the options */
     tcsetattr(file_descriptor, TCSANOW, &settings);
