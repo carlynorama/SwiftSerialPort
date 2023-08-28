@@ -1,0 +1,28 @@
+{
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "name": "Debug cereal",
+            "program": "${workspaceFolder:SwiftSerialPort}/.build/debug/cereal",
+            "args": [],
+            "cwd": "${workspaceFolder:SwiftSerialPort}",
+            "preLaunchTask": "swift: Build Debug cereal"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "name": "Release cereal",
+            "program": "${workspaceFolder:SwiftSerialPort}/.build/release/cereal",
+            "args": [],
+            "cwd": "${workspaceFolder:SwiftSerialPort}",
+            "preLaunchTask": "swift: Build Release cereal"
+        }
+    ]
+}
