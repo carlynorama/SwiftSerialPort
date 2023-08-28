@@ -114,7 +114,7 @@ extension SerialPort {
         var byteCount:Int32 = 0;
         let _ = bytes_available(fileDescriptor, &byteCount)
         if byteCount > 0 {
-            return try read(maxCount: Int(byteCount))
+            return try readIfAvailable(maxCount: Int(byteCount))
         } else {
             return []
         }

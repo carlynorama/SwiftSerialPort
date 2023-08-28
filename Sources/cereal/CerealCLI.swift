@@ -18,7 +18,6 @@ struct CerealCLI {
     let serialPort = try SerialPort(at:"/dev/cu.usbmodem1101")
     try serialPort.setBaudRate(57600)
     serialPort.flush() //will mess with async calls.
-    print(serialPort)
     sleep(3)
     let bytesWritten = try serialPort.write("A")
     print("\(bytesWritten)")
@@ -32,11 +31,11 @@ struct CerealCLI {
     // print("readUntil: \(incomingMessage2)")
     //serialPort.flush()
     //As soon as minNumberOfBytes is > 0, can hang forever.
-    serialPort.setReadEscapes(wait:30, minNumberOfBytes:1)
-    async let incomingMessage3 = serialPort.awaitData(count: 20)
+    try serialPort.setReadEscapes(wait:30, minNumberOfBytes:0)
+    async let incomingMessage3 = serialPort.awaitBytes(count: 20)
     print("some other activities...")
     print("awaited: \(await incomingMessage3)")
 
-    serialPort.close()
+    //serialPort.close() close is in deinit
 }
 }
