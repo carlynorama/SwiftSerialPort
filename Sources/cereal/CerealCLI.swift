@@ -1,5 +1,5 @@
 import SwiftSerialPort
-import Foundation //for sleep
+import SerialC //lets me call sleep without importing Foundation.
 
 
 @main
@@ -14,9 +14,9 @@ struct CerealCLI {
     sleep(3)
     let bytesWritten = try serialPort.write("A")
     print("\(bytesWritten)")
-    //let incomingMessage = try serialPort.readAllAvailable()
-    //print(incomingMessage, incomingMessage.count)
-
+    let incomingMessage = try serialPort.readAllAvailable()
+    print(incomingMessage, incomingMessage.count)
+    sleep(2)
     // let incomingLine = try serialPort.readLines()
     // print(incomingLine)
 
