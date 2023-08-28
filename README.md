@@ -19,3 +19,4 @@
 - https://circuitdigest.com/tutorial/serial-communication-protocols
 - https://doc.qt.io/qt-6/qserialport.html
 - https://www.wevolver.com/article/baud-rates-the-most-common-baud-rates
+- http://unixwiz.net/techtips/termios-vmin-vtime.html
