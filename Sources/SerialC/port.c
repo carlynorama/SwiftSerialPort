@@ -18,7 +18,7 @@ open_port(const char* port_location)
 {
     int file_descriptor; /* File descriptor for the port */
 
-    //O_RDWR = read write mode
+    //O_RDWR = read write mode. Defined in fcntl.h
     //O_NOCTTY = this is not a controlling terminal
     //O_NDELAY = ignore DCD line setting (whether the other end of the port is up and running)
     //           will sleep process until DCD signal line is in space voltage. 
@@ -37,29 +37,6 @@ int close_port(const int file_descriptor) {
   return close(file_descriptor);
 }
 
-//Example of how to update a termios setting. 
-//TODO: let user chose if immediate
-int update_baudrate(const int file_descriptor, const int new_rate, const int when) {
-  struct termios current_settings;
-  int r;
-
-  r = tcgetattr(file_descriptor, &current_settings);
-  if (r < 0) { return r; }
-
-  cfsetispeed(&current_settings, new_rate);
-  cfsetospeed(&current_settings, new_rate);
-
-  //TODO: needed? 
-      current_settings.c_cflag |= (CLOCAL | CREAD);
-
-    /*
-     * Set the new options for the port...
-     */
-
-  r = tcsetattr(file_descriptor, when, &current_settings);
-  return r;
-}
-
 int flush_port(int file_descriptor)
 {
     usleep(1000);
@@ -69,6 +46,87 @@ int flush_port(int file_descriptor)
     //ioctl(fd, TCFLSH, 1); // flush transmit
     //ioctl(file_descriptor, TCFLSH, 2); // flush both
 }
+
+
+//MARK: Settings
+
+int validate_baudrate(const int rate_to_check, speed_t* rate_to_use) {
+    switch(rate_to_check) {
+    case 9600:   *rate_to_use=B9600;   return 0;
+    case 57600:  *rate_to_use=B57600;  return 0;
+    case 115200: *rate_to_use=B115200; return 0;
+
+#ifdef B14400
+    case 14400:  *rate_to_use=B14400;  return 0;
+#endif
+    case 19200:  *rate_to_use=B19200;  return 0;
+#ifdef B28800
+    case 28800:  *rate_to_use=B28800;  return 0;
+#endif
+    case 38400:  *rate_to_use=B38400;  return 0;
+    case 76800:  *rate_to_use=B76800;  return 0;
+    case 230400: *rate_to_use=B230400; return 0;
+
+    //less common
+    case 0:      *rate_to_use=B0;      return 0;
+    case 50:     *rate_to_use=B50;     return 0;
+    case 75:     *rate_to_use=B75;     return 0;
+    case 110:    *rate_to_use=B110;    return 0;
+    case 134:    *rate_to_use=B134;    return 0;
+    case 150:    *rate_to_use=B150;    return 0;
+    case 200:    *rate_to_use=B200;    return 0;
+    case 300:    *rate_to_use=B300;    return 0;
+    case 600:    *rate_to_use=B600;    return 0;
+    case 1200:   *rate_to_use=B1200;   return 0;
+    case 1800:   *rate_to_use=B1800;   return 0;
+    case 2400:   *rate_to_use=B2400;   return 0;
+    case 4800:   *rate_to_use=B4800;   return 0;
+#ifdef B7200
+    case 7200:   *rate_to_use=B7200;   return 0;
+#endif
+
+//TODO: Each of these should get their independent ifdefs, really. 
+//This is the Linux only batch. 
+#ifdef B460800
+    case 460800:   *rate_to_use=B460800;   return 0;
+    case 500000:   *rate_to_use=B500000;   return 0;
+    case 576000:   *rate_to_use=B576000;   return 0;
+    case 921600:   *rate_to_use=B921600;   return 0;
+    case 1000000:   *rate_to_use=B1000000;   return 0;
+    case 1152000:   *rate_to_use=B1152000;   return 0;
+    case 1500000:   *rate_to_use=B1500000;   return 0;
+    case 2000000:   *rate_to_use=B2000000;   return 0;
+    case 2500000:   *rate_to_use=B2500000;   return 0;
+    case 3500000:   *rate_to_use=B3500000;   return 0;
+    case 4000000:   *rate_to_use=B4000000;   return 0;
+#endif
+    }
+    *rate_to_use = rate_to_check;
+    return -1;
+
+}
+
+int update_baudrate(const int file_descriptor, const speed_t new_rate, const int when) {
+  struct termios current_settings;
+  int r;
+
+  r = tcgetattr(file_descriptor, &current_settings);
+  if (r < 0) { 
+    perror("update_baudrate: couldn't get current settings");
+    return -1;
+  }
+
+  cfsetispeed(&current_settings, new_rate);
+  cfsetospeed(&current_settings, new_rate);
+
+  r = tcsetattr(file_descriptor, when, &current_settings);
+  if (r < 0) {
+      perror("update_baudrate: couldn't set baud rate");
+      return -2;
+  }
+  return 0;
+}
+
 
 
 /* Set the O_NONBLOCK flag of desc if value is nonzero,

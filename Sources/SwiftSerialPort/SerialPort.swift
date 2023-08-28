@@ -1,11 +1,5 @@
 import SerialC
 
-// enum connectionMode {
-//     case receiveOnly
-//     case transmitOnly
-//     case bidirectional
-// }
-
 public struct SerialPort {
     let fileDescriptor:Int32
     let devicePath:String

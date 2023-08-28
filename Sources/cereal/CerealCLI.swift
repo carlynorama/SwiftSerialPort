@@ -8,9 +8,8 @@ struct CerealCLI {
 
         //let args = CommandLine.arguments
     let serialPort = try SerialPort(at:"/dev/cu.usbmodem1101")
-    serialPort.setBaudRate(.baud57600)
-
-    print()
+    try serialPort.setBaudRate(57600)
+    serialPort.flush() //will mess with async calls.
     print(serialPort)
     sleep(3)
     let bytesWritten = try serialPort.write("A")

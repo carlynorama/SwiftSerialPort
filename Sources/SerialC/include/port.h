@@ -8,6 +8,7 @@ int open_port(const char* port_location);
 int close_port(const int file_descriptor);
 int flush_port(const int file_descriptor);
 
-int update_baudrate(const int file_descriptor, const int new_rate, const int when);
+int validate_baudrate(const int rate_to_check, speed_t* rate_to_use);
+int update_baudrate(const int file_descriptor, const speed_t new_rate, const int when);
 
 #endif /* port_h */
