@@ -1,3 +1,11 @@
+//
+//  CerealCLI.swift
+//  SwiftSerialPort
+//
+//  Created by Carlyn Maw on 8/26/23.
+//
+
+
 import SwiftSerialPort
 import SerialC //lets me call sleep without importing Foundation.
 

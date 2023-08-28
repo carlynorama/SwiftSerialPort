@@ -1,3 +1,9 @@
+/*
+//  reading.h
+//  SwiftSerialPort
+//
+//  Created by Carlyn Maw on 8/26/23.
+*/
 #ifndef reading_h
 #define reading_h
 

@@ -1,3 +1,9 @@
+/*
+//  port.c
+//  SwiftSerialPort
+//
+//  Created by Carlyn Maw on 8/26/23.
+*/
 #include "port.h"
 #include <stdio.h>   /* Standard input/output definitions */
 #include <string.h>  /* String function definitions */
@@ -13,6 +19,7 @@
 * https://www.msweet.org/serial/serial.html#listing1
 */
 
+//MARK: Open
 int
 open_port(const char* port_location)
 {
@@ -32,11 +39,12 @@ open_port(const char* port_location)
         fcntl(file_descriptor, F_SETFL, 0);
     return (file_descriptor);
 }
-
+//MARK: Close
 int close_port(const int file_descriptor) {
   return close(file_descriptor);
 }
 
+//MARK: Flush
 int flush_port(int file_descriptor)
 {
     usleep(1000);

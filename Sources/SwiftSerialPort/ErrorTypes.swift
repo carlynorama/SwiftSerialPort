@@ -1,3 +1,10 @@
+//
+//  ErrorTypes.swift
+//  SwiftSerialPort
+//
+//  Created by Carlyn Maw on 8/26/23.
+//
+
 public enum SerialConnectionError:Error {
     case couldNotOpenPort
     case notADeviceFilePath

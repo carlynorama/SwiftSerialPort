@@ -1,3 +1,9 @@
+//
+//  SerialPort.swift
+//  SwiftSerialPort
+//
+//  Created by Carlyn Maw on 8/26/23.
+
 import SerialC
 
 public struct SerialPort {

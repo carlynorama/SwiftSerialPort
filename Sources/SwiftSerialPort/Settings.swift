@@ -1,3 +1,9 @@
+//
+//  Settings.swift
+//  SwiftSerialPort
+//
+//  Created by Carlyn Maw on 8/27/23.
+//
 import SerialC
 
 // FROM termios.h

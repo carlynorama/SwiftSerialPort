@@ -1,3 +1,9 @@
+/*
+//  port.h
+//  SwiftSerialPort
+//
+//  Created by Carlyn Maw on 8/26/23.
+*/
 #ifndef port_h
 #define port_h
 
