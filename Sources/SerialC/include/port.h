@@ -6,6 +6,7 @@
 
 int open_port(const char* port_location);
 int close_port(const int file_descriptor);
+int flush_port(const int file_descriptor);
 
 int update_baudrate(const int file_descriptor, const int new_rate, const int when);
 

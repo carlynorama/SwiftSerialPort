@@ -35,7 +35,7 @@ public enum BaudRate {
     case baud3500000
     case baud4000000
 
-    var maskValue: Int32 {
+    var maskValue: CInt {
         switch self {
         case .baud0:
             return  B0
@@ -122,7 +122,7 @@ public enum BaudRate {
     case baud115200
     case baud230400
 
-    var maskValue: Int32 {
+    var maskValue: CInt {
         switch self {
         case .baud0:
             return  B0

@@ -9,20 +9,21 @@ struct CerealCLI {
         //let args = CommandLine.arguments
     let serialPort = try SerialPort(at:"/dev/cu.usbmodem1101")
     serialPort.setBaudRate(.baud57600)
+
     print()
     print(serialPort)
     sleep(3)
     let bytesWritten = try serialPort.write("A")
     print("\(bytesWritten)")
-    // let incomingMessage = try serialPort.readAllAvailable()
-    // print(incomingMessage, incomingMessage.count)
+    //let incomingMessage = try serialPort.readAllAvailable()
+    //print(incomingMessage, incomingMessage.count)
 
     // let incomingLine = try serialPort.readLines()
     // print(incomingLine)
 
-    // let incomingMessage2 = serialPort.readUntil(oneOf: [30])
-    // print("readUntil: \(incomingMessage2)")
-
+    let incomingMessage2 = serialPort.readUntil(oneOf: [30, 63])
+    print("readUntil: \(incomingMessage2)")
+    //serialPort.flush()
     async let incomingMessage3 = serialPort.awaitData(count: 20)
     print("some other activities...")
     print("awaited: \(await incomingMessage3)")

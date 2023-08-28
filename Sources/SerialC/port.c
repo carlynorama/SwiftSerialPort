@@ -1,12 +1,11 @@
 #include "port.h"
-#include <mach/mach_types.h>
 #include <stdio.h>   /* Standard input/output definitions */
 #include <string.h>  /* String function definitions */
 #include <unistd.h>  /* UNIX standard function definitions */
 #include <fcntl.h>   /* File control definitions */
 #include <errno.h>   /* Error number definitions */
 #include <termios.h> /* POSIX terminal control definitions */
-
+#include <sys/ioctl.h>
 /*
 * 'open_port()' - Open serial port 1.
 *
@@ -61,6 +60,15 @@ int update_baudrate(const int file_descriptor, const int new_rate, const int whe
   return r;
 }
 
+int flush_port(int file_descriptor)
+{
+    usleep(1000);
+    return tcflush(file_descriptor, TCIOFLUSH);
+    //wanted to use one of the below but TCFLSH is not defined?
+    //ioctl(fd, TCFLSH, 0); // flush receive
+    //ioctl(fd, TCFLSH, 1); // flush transmit
+    //ioctl(file_descriptor, TCFLSH, 2); // flush both
+}
 
 
 /* Set the O_NONBLOCK flag of desc if value is nonzero,

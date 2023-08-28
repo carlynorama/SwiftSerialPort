@@ -52,6 +52,11 @@ public struct SerialPort {
         let result = close_port(fileDescriptor)
         print("closing \(fileDescriptor): \(result)")
     }
+
+    public func flush() {
+        let result = flush_port(fileDescriptor)
+        print ("flushing \(fileDescriptor): \(result)")
+    }
     
 }
 
