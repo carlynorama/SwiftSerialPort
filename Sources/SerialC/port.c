@@ -142,12 +142,22 @@ int update_baudrate(const int file_descriptor, const speed_t new_rate, const int
 //    fcntl(fd, F_SETFL, 0);
 int set_early_fail_behavior(const int file_descriptor, const cc_t new_vtime, const cc_t new_vmin) {
       /* get the current options */
+    int r;
     struct termios settings;
     tcgetattr(file_descriptor, &settings);
+    if (r < 0) { 
+        perror("update_baudrate: couldn't get current settings");
+        return -1;
+    }
 
     settings.c_cc[VTIME] = new_vtime;//10;
     settings.c_cc[VMIN]  = new_vmin; //0
 
     /* set the options */
     tcsetattr(file_descriptor, TCSANOW, &settings);
+    if (r < 0) {
+      perror("update_baudrate: couldn't set VTIME and VMIN");
+      return -2;
+    }
+    return 0;
 }
