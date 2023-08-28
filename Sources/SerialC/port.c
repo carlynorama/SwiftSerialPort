@@ -134,25 +134,3 @@ int update_baudrate(const int file_descriptor, const speed_t new_rate, const int
   }
   return 0;
 }
-
-
-
-/* Set the O_NONBLOCK flag of desc if value is nonzero,
-   or clear the flag if value is 0.
-   Return 0 on success, or -1 on error with errno set. */
-
-// int
-// set_flag (int file_descriptor, int flag, boolean_t on)
-// {
-//   int current_flags = fcntl (file_descriptor, F_GETFL, 0);
-//   /* If reading the flags failed, return error indication now. */
-//   if (current_flags == -1)
-//     return -1;
-//   /* Set just the flag we want to set. */
-//   if (on)
-//     current_flags |= flag;
-//   else
-//     current_flags &= ~flag;
-//   /* Store modified flag word in the descriptor. */
-//   return fcntl (file_descriptor, F_SETFL, current_flags);
-// }
