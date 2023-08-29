@@ -120,7 +120,7 @@ extension SerialPort {
         }
     }
     
-    public func readAvailableLines(maxLength:Int = 1024) throws -> (lines:[String], remainder:String) {
+    public func readAvailableLines(maxSplits:Int = 10000) throws -> (lines:[String], remainder:String) {
         var buffer = try readAllAvailable()
         //TODO: other encodings aren't likely but aren't impossible. 
         buffer.append(0) //cString must be null terminated 
@@ -132,7 +132,10 @@ extension SerialPort {
         } else {
             remainder = ""
         }
-        let lines = dataAsString.split(maxSplits: maxLength, omittingEmptySubsequences: true, whereSeparator: { $0.isNewline }).map { String($0) }
+        let lines = dataAsString.split(maxSplits: maxSplits, 
+                                                 omittingEmptySubsequences: true, 
+                                                 whereSeparator: { $0.isNewline })
+                                          .map { String($0) }
         print(lines)
         return (lines, remainder)
     }
